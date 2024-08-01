@@ -13,7 +13,17 @@ inputs:
 runs:
   using: "composite"
   steps:
+    - name: Greeting
+      shell: bash
+      run: |
+        echo "Hello"
+
     - name: Print .NET version input
       shell: bash
       run: |
         echo ".NET version: ${{ inputs.dotnet-version }}"
+
+    - name: Salutation
+      shell: bash
+      run: |
+        echo "Goodbye"
