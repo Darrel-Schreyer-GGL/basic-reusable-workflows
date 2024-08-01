@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Calls Reusable
-        uses: ./.github/actions/reusable
+        uses: ./
         with:
           dotnet-version: ${{ env.VERSION }}
           first-name: ${{ vars.FIRST_NAME }}
