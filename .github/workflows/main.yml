@@ -6,7 +6,6 @@ on:
 
 env:
   VERSION: '7.x'
-  FIRST_NAME: 'Dude'
 
 jobs:
   build:
@@ -20,4 +19,4 @@ jobs:
         uses: ./.github/actions/reusable
         with:
           dotnet-version: ${{ env.VERSION }}
-          first-name: ${{ env.FIRST_NAME }}
+          first-name: ${{ vars.FIRST_NAME }}
