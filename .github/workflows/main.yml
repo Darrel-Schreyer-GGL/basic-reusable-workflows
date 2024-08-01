@@ -1,21 +1,23 @@
-# learning-actions/.github/workflows/main.yml
+# basic-reusable-workflows/.github/workflows/main.yml
 name: Build Action
 
 on:
   workflow_dispatch:
 
+env:
+  VERSION: '8.x'
+  FIRST_NAME: 'Dude'
+
 jobs:
   build:
     runs-on: ubuntu-latest
 
-    env:
-      VERSION: 8.x
-
     steps:
       - name: Check out code
-        uses: actions/checkout@v2
+        uses: actions/checkout@v4
 
       - name: Calls Reusable
         uses: ./.github/actions/reusable
         with:
           dotnet-version: ${{ env.VERSION }}
+          first-name: ${{ env.FIRST_NAME }}

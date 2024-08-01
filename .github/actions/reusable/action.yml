@@ -1,4 +1,4 @@
-# learning-actions/.github/actions/reusable/action.yml
+# basic-reusable-workflows/.github/actions/reusable/action.yml
 name: Reusable Build Action
 
 description: 'A reusable action to build .NET projects'
@@ -8,7 +8,12 @@ inputs:
     description: 'The version of .NET to use (7 or 8)'
     required: true
     type: string
-    default: '7.x'
+    default: '8.x'
+  first-name:
+    description: 'The first name of the person to greet'
+    required: true
+    type: string
+    default: ''
 
 runs:
   using: "composite"
@@ -16,7 +21,7 @@ runs:
     - name: Greeting
       shell: bash
       run: |
-        echo "Hello"
+        echo "Hello ${{ inputs.first-name }}"
 
     - name: Print .NET version input
       shell: bash
