@@ -1,5 +1,5 @@
-# basic-reusable-workflows/.github/workflows/main.yml
-name: Build Action
+# basic-reusable-workflows/.github/workflows/test.yml
+name: Test Action
 
 on:
   workflow_dispatch:

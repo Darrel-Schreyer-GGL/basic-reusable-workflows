@@ -5,7 +5,7 @@ This repository demonstrates the basic concepts of a reusable composite action t
 There are two .yml files:
 
 - .github/workflows/main.yml
-- .github/actions/reusable/action.yml
+- action.yml
 
 
 I suggest you fork the repo so that you can run the actions to see what they do.
