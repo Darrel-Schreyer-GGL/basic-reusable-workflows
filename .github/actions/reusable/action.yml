@@ -1,0 +1,19 @@
+# learning-actions/.github/actions/reusable/action.yml
+name: Reusable Build Action
+
+description: 'A reusable action to build .NET projects'
+
+inputs:
+  dotnet-version:
+    description: 'The version of .NET to use (7 or 8)'
+    required: true
+    type: string
+    default: '7.x'
+
+runs:
+  using: "composite"
+  steps:
+    - name: Print .NET version input
+      shell: bash
+      run: |
+        echo ".NET version: ${{ inputs.dotnet-version }}"

@@ -1,0 +1,21 @@
+# learning-actions/.github/workflows/main.yml
+name: Build Action
+
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    env:
+      VERSION: 8.x
+
+    steps:
+      - name: Check out code
+        uses: actions/checkout@v2
+
+      - name: Calls Reusable
+        uses: ./.github/actions/reusable
+        with:
+          dotnet-version: ${{ env.VERSION }}
