@@ -15,8 +15,15 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
+      - name: Calls Greeter
+        uses: ./greeter
+        with:
+          first-name: ${{ vars.FIRST_NAME }}
+
       - name: Calls Reusable
-        uses: ./
+        uses: ./reusable
         with:
           dotnet-version: ${{ env.VERSION }}
-          first-name: ${{ vars.FIRST_NAME }}
+
+      - name: Calls Salutation
+        uses: ./salutation

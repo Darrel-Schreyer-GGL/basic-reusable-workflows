@@ -1,0 +1,19 @@
+# basic-reusable-workflows/greeter/action.yml
+name: Greeter Action
+
+description: 'A greeter action'
+
+inputs:
+  first-name:
+      description: 'The first name of the person to greet'
+      required: true
+      type: string
+      default: ''
+
+runs:
+  using: "composite"
+  steps:
+    - name: Greeting
+      shell: bash
+      run: |
+        echo "Hello ${{ inputs.first-name }}"
