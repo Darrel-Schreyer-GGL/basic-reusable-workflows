@@ -1,11 +1,11 @@
 # basic-reusable-workflows/.github/workflows/test.yml
-name: Test with .NET 6.12.0.182 Action
+name: Test with .NET 6.12.0 Action
 
 on:
   workflow_dispatch:
 
 env:
-  VERSION: '6.12.0.182'
+  VERSION: '6.12.0'
 
 jobs:
   build:
