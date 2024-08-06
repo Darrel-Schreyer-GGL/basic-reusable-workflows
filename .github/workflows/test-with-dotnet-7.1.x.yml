@@ -1,5 +1,5 @@
 # basic-reusable-workflows/.github/workflows/test.yml
-name: Test Action
+name: Test with .NET 7.1.x Action
 
 on:
   workflow_dispatch:
