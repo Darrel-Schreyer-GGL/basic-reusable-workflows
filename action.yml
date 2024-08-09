@@ -1,0 +1,32 @@
+# basic-reusable-workflows/action.yml
+name: Reusable Build Action
+
+description: 'A reusable action to do .NET stuff'
+
+inputs:
+  dotnet-version:
+    description: 'The version of .NET to use (7 or 8)'
+    required: true
+    type: string
+    default: '8.x'
+  solution-path:
+    description: 'The full path to the solution file'
+    required: true
+    type: string
+
+runs:
+  using: "composite"
+  steps:
+
+    - name: Print .NET version input
+      shell: bash
+      run: |
+        echo ".NET version: ${{ inputs.dotnet-version }}"
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v3
+      with:
+        dotnet-version: ${{ inputs.dotnet-version }}
+
+    - name: Install dependencies
+      run: dotnet restore ${{ inputs.solution-path }}

@@ -5,7 +5,7 @@ on:
   workflow_dispatch:
 
 env:
-  VERSION: '7.x'
+  VERSION: '8.*'
 
 jobs:
   build:
@@ -15,15 +15,8 @@ jobs:
       - name: Check out code
         uses: actions/checkout@v4
 
-      - name: Calls Greeter
-        uses: basic-reusable-workflows/greeter
-        with:
-          first-name: ${{ vars.FIRST_NAME }}
-
       - name: Calls Reusable
-        uses: ./reusable
+        uses: ./
         with:
           dotnet-version: ${{ env.VERSION }}
-
-      - name: Calls Salutation
-        uses: ./salutation
+          solution-path: '**/DotNetConsoleSample.sln'
