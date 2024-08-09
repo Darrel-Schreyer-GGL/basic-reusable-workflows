@@ -16,7 +16,7 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Calls Greeter
-        uses: ./greeter
+        uses: basic-reusable-workflows/greeter
         with:
           first-name: ${{ vars.FIRST_NAME }}
 
