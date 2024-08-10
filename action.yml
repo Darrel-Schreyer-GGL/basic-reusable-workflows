@@ -42,15 +42,19 @@ runs:
         dotnet-version: "${{inputs.DOTNET-VERSION}}"
 
     - name: "Install dependencies for the Solution"
+      shell: bash
       run: dotnet restore "${{ inputs.SOLUTION-PATH }}"
 
     - name: "Build the Solution"
+      shell: bash
       run: dotnet build --no-restore --configuration Release "${{ inputs.SOLUTION-PATH }}"
 
     - name: "Run tests for the Solution with Code Coverage"
+      shell: bash
       run: dotnet test --no-restore --configuration Release --collect:"XPlat Code Coverage" "${{ inputs.SOLUTION-PATH }}"
 
     - name: "Install required tools for coverage calculation"
+      shell: bash
       run: |
         sudo apt-get update
         sudo apt-get install -y libxml2-utils bc
