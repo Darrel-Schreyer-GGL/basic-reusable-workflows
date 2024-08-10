@@ -1,3 +1,5 @@
+using DotNetConsoleSample;
+
 namespace DotNetConsoleSampleTests;
 
 [TestClass]
