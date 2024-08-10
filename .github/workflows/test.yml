@@ -38,8 +38,7 @@ jobs:
           echo "Reusable workflow failed with exit code $?"
           exit 1  # Fail this workflow step if the reusable workflow failed
       
-      - name: "Check reusable workflow exit code"
-        if: ${{ steps.reusable_build.outcome == 'success' }} # Check if the reusable workflow step succeeded
+      - name: "Check code coverage"
         run: |
-          echo "Reusable workflow succeeded!"
+          echo "Code coverage is: ${{ steps.reusable_build.outputs.COVERAGE-PERCENTAGE }}"
 
