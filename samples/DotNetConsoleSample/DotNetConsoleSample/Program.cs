@@ -1,10 +1,14 @@
-﻿// See https://aka.ms/new-console-template for more information
-Console.WriteLine("Hello, World!");
+﻿using System.Diagnostics.CodeAnalysis;
 
-public class DoStuff
+namespace DotNetConsoleSample;
+
+[ExcludeFromCodeCoverage]
+internal static class Program
 {
-    public string GetTheThing()
+    static void Main(string[] args)
     {
-        return "The Thing";
+        var doStuff = new DoStuff();
+        var theThing = doStuff.GetTheThing();
+        Console.WriteLine(theThing);
     }
 }
