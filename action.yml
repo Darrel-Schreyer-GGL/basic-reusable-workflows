@@ -24,7 +24,6 @@ outputs:
     description: "The percentage of code coverage."
     value: ${{ steps.print-coverage-percentage.outputs.coverage-percentage }}
 
-
 runs:
   using: "composite"
   steps:
@@ -42,13 +41,13 @@ runs:
       with:
         dotnet-version: "${{inputs.DOTNET-VERSION}}"
 
-    - name: "Install dependencies"
+    - name: "Install dependencies for the Solution"
       run: dotnet restore "${{ inputs.SOLUTION-PATH }}"
 
-    - name: "Build the application"
+    - name: "Build the Solution"
       run: dotnet build --no-restore --configuration Release "${{ inputs.SOLUTION-PATH }}"
 
-    - name: "Run tests with Code Coverage"
+    - name: "Run tests for the Solution with Code Coverage"
       run: dotnet test --no-restore --configuration Release --collect:"XPlat Code Coverage" "${{ inputs.SOLUTION-PATH }}"
 
     - name: "Install required tools for coverage calculation"
@@ -89,7 +88,7 @@ runs:
         expected_coverage=${{ inputs.EXPECTED-COVERAGE }}
         echo "Code Coverage Percentage: $actual_coverage%"
         if (( $(echo "$actual_coverage < $expected_coverage" | bc -l) )); then
-          echo "Code coverage ($actual_coverage%) is less than expected ($expected_coverage%)."
+          echo "ERROR: Code coverage ($actual_coverage%) is less than expected ($expected_coverage%)."
           exit 1
         else
           echo "Code coverage ($actual_coverage%) meets or exceeds the expected value ($expected_coverage%)."
