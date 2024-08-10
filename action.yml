@@ -1,32 +1,96 @@
 # basic-reusable-workflows/action.yml
 name: Reusable Build Action
 
-description: 'A reusable action to do .NET stuff'
+description: "A reusable action to do .NET stuff"
 
 inputs:
-  dotnet-version:
-    description: 'The version of .NET to use (7 or 8)'
+  DOTNET-VERSION:
+    description: "The version of .NET to use (7 or 8)"
     required: true
     type: string
-    default: '8.x'
-  solution-path:
-    description: 'The full path to the solution file'
+    default: "8.x"
+  SOLUTION-PATH:
+    description: "The full path to the solution file"
     required: true
     type: string
+  EXPECTED-COVERAGE:
+    description: "The expected code coverage percentage"
+    required: true
+    type: number
+    default: 50
+
+outputs:
+  COVERAGE-PERCENTAGE:
+    description: "The percentage of code coverage."
+    value: ${{ steps.print-coverage-percentage.outputs.coverage-percentage }}
+
 
 runs:
   using: "composite"
   steps:
 
-    - name: Print .NET version input
+    - name: "Check out code"
+      uses: actions/checkout@v4
+
+    - name: "Print .NET version input"
       shell: bash
       run: |
-        echo ".NET version: ${{ inputs.dotnet-version }}"
+        echo ".NET version: ${{ inputs.DOTNET-VERSION }}"
 
-    - name: Setup .NET
+    - name: "Setup .NET"
       uses: actions/setup-dotnet@v4
       with:
-        dotnet-version: ${{ inputs.dotnet-version }}
+        dotnet-version: "${{inputs.DOTNET-VERSION}}"
 
-    - name: Install dependencies
-      run: dotnet restore ${{ inputs.solution-path }}
+    - name: "Install dependencies"
+      run: dotnet restore "${{ inputs.SOLUTION-PATH }}"
+
+    - name: "Build the application"
+      run: dotnet build --no-restore --configuration Release "${{ inputs.SOLUTION-PATH }}"
+
+    - name: "Run tests with Code Coverage"
+      run: dotnet test --no-restore --configuration Release --collect:"XPlat Code Coverage" "${{ inputs.SOLUTION-PATH }}"
+
+    - name: "Install required tools for coverage calculation"
+      run: |
+        sudo apt-get update
+        sudo apt-get install -y libxml2-utils bc
+
+    - name: "Calculate and Output Coverage Percentage"
+      id: print-coverage-percentage
+      shell: bash
+      run: |
+        echo "Starting coverage calculation"
+        coverageFile=$(find . -name "coverage.cobertura.xml" -type f | head -n 1)
+        echo "Found coverage file: $coverageFile"
+        if [ -f "$coverageFile" ]; then
+          echo "Coverage file exists"
+          totalLines=$(xmllint --xpath "string(//coverage/@lines-valid)" "$coverageFile")
+          echo "Total lines: $totalLines"
+          coveredLines=$(xmllint --xpath "string(//coverage/@lines-covered)" "$coverageFile")
+          echo "Covered lines: $coveredLines"
+          if [ "$totalLines" -gt 0 ]; then
+            coveragePercentage=$(echo "scale=2; $coveredLines / $totalLines * 100" | bc)
+            echo "Calculated coverage percentage: $coveragePercentage%"
+            echo "::set-output name=coverage-percentage::$coveragePercentage"
+          else
+            echo "No lines to cover."
+            echo "::set-output name=coverage-percentage::0"
+          fi
+        else
+          echo "No coverage report found."
+          echo "::set-output name=coverage-percentage::0"
+        fi
+
+    - name: "Assert and Print Code Coverage"
+      shell: bash
+      run: |
+        actual_coverage=${{ steps.print-coverage-percentage.outputs.coverage-percentage }}
+        expected_coverage=${{ inputs.EXPECTED-COVERAGE }}
+        echo "Code Coverage Percentage: $actual_coverage%"
+        if (( $(echo "$actual_coverage < $expected_coverage" | bc -l) )); then
+          echo "Code coverage ($actual_coverage%) is less than expected ($expected_coverage%)."
+          exit 1
+        else
+          echo "Code coverage ($actual_coverage%) meets or exceeds the expected value ($expected_coverage%)."
+        fi

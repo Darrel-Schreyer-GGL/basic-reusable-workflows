@@ -3,20 +3,33 @@ name: Test Action
 
 on:
   workflow_dispatch:
+  push:
+    paths:
+      - "action.yml"
+      - ".github/workflows/**"
+      - "samples/**"
+    paths-ignore:
+      - "README.md"
 
 env:
-  VERSION: '8.x'
+  DOTNET-VERSION: "8.x"
+  ACTIONS_RUNNER_DEBUG: true # Enable debug logging
+  EXPECTED_COVERAGE: 50
+
 
 jobs:
   build:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Check out code
+
+      - name: "Check out code" # Only need for test as it needs to access the ./action.yml file
         uses: actions/checkout@v4
 
-      - name: Calls Reusable
+      - name: "Calls Reusable"
+        id: reusable_build  # Assign an ID to the step to reference its outputs
         uses: ./
         with:
-          dotnet-version: ${{ env.VERSION }}
-          solution-path: './samples/DotNetConsoleSample/DotNetConsoleSample.sln'
+          DOTNET-VERSION: "${{ env.DOTNET-VERSION }}"
+          SOLUTION-PATH: "./samples/DotNetConsoleSample/DotNetConsoleSample.sln"
+          EXPECTED-COVERAGE: ${{ env.EXPECTED_COVERAGE }}
