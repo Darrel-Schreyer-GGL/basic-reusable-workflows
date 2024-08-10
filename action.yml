@@ -99,3 +99,16 @@ runs:
       with:
         name: solution-build-artifacts
         path: "./**/bin/Release"
+
+    - name: Generate Code Coverage Report
+      uses: danielpalme/ReportGenerator-GitHub-Action@5.2.3
+      with:
+        reports: '**/TestResults/**/coverage.cobertura.xml'
+        targetdir: coveragereport
+        reporttypes: Html;HtmlSummary;MarkdownSummaryGithub
+        
+    - name: "Upload Code Caoverage Report Artifacts"
+      uses: actions/upload-artifact@v4
+      with:
+        name: solution-code-coverage-artifacts
+        path: "./coveragereport"
