@@ -31,3 +31,15 @@ jobs:
           DOTNET-VERSION: "${{ env.DOTNET-VERSION }}"
           SOLUTION-PATH: "./samples/DotNetConsoleSample/DotNetConsoleSample.sln"
           EXPECTED-COVERAGE: ${{ env.EXPECTED_COVERAGE }}
+
+      - name: "Check reusable workflow exit code"
+        if: ${{ steps.reusable_build.outcome != 'success' }} # Check if the reusable workflow step failed
+        run: |
+          echo "Reusable workflow failed with exit code $?"
+          exit 1  # Fail this workflow step if the reusable workflow failed
+      
+      - name: "Check reusable workflow exit code"
+        if: ${{ steps.reusable_build.outcome == 'success' }} # Check if the reusable workflow step succeeded
+        run: |
+          echo "Reusable workflow succeeded!"
+
