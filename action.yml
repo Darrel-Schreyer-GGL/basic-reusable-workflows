@@ -102,4 +102,4 @@ runs:
       uses: actions/upload-artifact@v4
       with:
         name: solution-build-artifacts
-        path: "${{ inputs.SOLUTION-PATH }}/**/bin/Release"
+        path: "./**/bin/Release"
