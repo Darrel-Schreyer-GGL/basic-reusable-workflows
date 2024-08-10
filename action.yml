@@ -99,7 +99,7 @@ runs:
         fi
 
     - name: "Upload Solution Build Artifacts"
-      uses: actions/upload-artifact@v2
+      uses: actions/upload-artifact@v4
       with:
         name: solution-build-artifacts
         path: "${{ inputs.SOLUTION-PATH }}/**/bin/Release"
