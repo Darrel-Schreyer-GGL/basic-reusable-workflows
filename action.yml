@@ -97,3 +97,9 @@ runs:
         else
           echo "Code coverage ($actual_coverage%) meets or exceeds the expected value ($expected_coverage%)."
         fi
+
+    - name: "Upload Solution Build Artifacts"
+      uses: actions/upload-artifact@v2
+      with:
+        name: solution-build-artifacts
+        path: "${{ inputs.SOLUTION-PATH }}/**/bin/Release"
