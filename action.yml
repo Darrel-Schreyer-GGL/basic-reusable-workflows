@@ -71,14 +71,14 @@ runs:
           if [ "$totalLines" -gt 0 ]; then
             coveragePercentage=$(echo "scale=2; $coveredLines / $totalLines * 100" | bc)
             echo "Calculated coverage percentage: $coveragePercentage%"
-            echo "{coverage-percentage}={$coveragePercentage}" >> $GITHUB_OUTPUT
+            echo "{COVERAGE-PERCENTAGE}={$coveragePercentage}" >> $GITHUB_OUTPUT
           else
             echo "No lines to cover."
-            echo "{coverage-percentage}={0}" >> $GITHUB_OUTPUT
+            echo "{COVERAGE-PERCENTAGE}={0}" >> $GITHUB_OUTPUT
           fi
         else
           echo "No coverage report found."
-          echo "{coverage-percentage}={0}" >> $GITHUB_OUTPUT
+          echo "{COVERAGE-PERCENTAGE}={0}" >> $GITHUB_OUTPUT
         fi
 
     - name: "Assert and Print Code Coverage"
