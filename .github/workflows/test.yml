@@ -8,8 +8,6 @@ on:
       - "action.yml"
       - ".github/workflows/**"
       - "samples/**"
-    paths-ignore:
-      - "README.md"
 
 env:
   DOTNET-VERSION: "8.x"
