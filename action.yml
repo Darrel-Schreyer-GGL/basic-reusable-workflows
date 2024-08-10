@@ -53,17 +53,13 @@ runs:
       shell: bash
       run: dotnet test --no-restore --configuration Release --collect:"XPlat Code Coverage" "${{ inputs.SOLUTION-PATH }}"
 
-    - name: "Install required tools for coverage calculation"
-      shell: bash
-      run: |
-        sudo apt-get update
-        sudo apt-get install -y libxml2-utils bc
-
     - name: "Calculate and Output Coverage Percentage"
       id: print-coverage-percentage
       shell: bash
       run: |
         echo "Starting coverage calculation"
+        sudo apt-get update
+        sudo apt-get install -y libxml2-utils bc
         coverageFile=$(find . -name "coverage.cobertura.xml" -type f | head -n 1)
         echo "Found coverage file: $coverageFile"
         if [ -f "$coverageFile" ]; then
@@ -75,14 +71,14 @@ runs:
           if [ "$totalLines" -gt 0 ]; then
             coveragePercentage=$(echo "scale=2; $coveredLines / $totalLines * 100" | bc)
             echo "Calculated coverage percentage: $coveragePercentage%"
-            echo "::set-output name=coverage-percentage::$coveragePercentage"
+            echo "{coverage-percentage}={$coveragePercentage}"
           else
             echo "No lines to cover."
-            echo "::set-output name=coverage-percentage::0"
+            echo "{coverage-percentage}={0}"
           fi
         else
           echo "No coverage report found."
-          echo "::set-output name=coverage-percentage::0"
+          echo "{coverage-percentage}={0}"
         fi
 
     - name: "Assert and Print Code Coverage"
