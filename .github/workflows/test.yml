@@ -37,7 +37,7 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
       - name: "Calls Reusable"
-        id: reusable_build  # Assign an ID to the step to reference its outputs
+        id: reusable_build
         uses: ./
         with:
           DOTNET-VERSION: "${{ env.DOTNET-VERSION }}"
@@ -46,10 +46,10 @@ jobs:
           SEMVER: ${{ env.GITVERSION }}
 
       - name: "Check reusable workflow exit code"
-        if: ${{ steps.reusable_build.outcome != 'success' }} # Check if the reusable workflow step failed
+        if: ${{ steps.reusable_build.outcome != 'success' }}
         run: |
           echo "Reusable workflow failed with exit code ${{ steps.reusable_build.conclusion }}"
-          exit 1  # Fail this workflow step if the reusable workflow failed
+          exit 1
       
       - name: "Check code coverage"
         run: |
