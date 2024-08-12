@@ -49,12 +49,12 @@ runs:
       with:
         dotnet-version: "${{inputs.DOTNET-VERSION}}"
 
-    # - name: Calculate SemVer
-    #     id: version
-    #     run: |
-    #       echo "GITVERSION=$(gitversion /showvariable SemVer)" >> $GITHUB_ENV
-    #     env:
-    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+    - name: Calculate SemVer
+        id: version
+        run: |
+          echo "GITVERSION=$(gitversion /showvariable SemVer)" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: "Install dependencies for the Solution"
       shell: bash
