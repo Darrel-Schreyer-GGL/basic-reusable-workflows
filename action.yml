@@ -109,7 +109,7 @@ runs:
     - name: "Upload Solution Build Artifacts"
       uses: actions/upload-artifact@v4
       with:
-        name: solution-build-artifacts
+        name: solution-build-artifacts-${{ inputs.SEMVER }}
         path: "./**/bin/Release"
 
     - name: Generate Code Coverage Report
@@ -122,5 +122,5 @@ runs:
     - name: "Upload Code Coverage Report Artifacts"
       uses: actions/upload-artifact@v4
       with:
-        name: solution-code-coverage-artifacts
+        name: solution-code-coverage-artifacts-${{ inputs.SEMVER }}
         path: "./coveragereport"
