@@ -28,7 +28,7 @@ jobs:
         run: |
           dotnet tool install -g GitVersion.Tool
           export PATH="$PATH:/home/runner/.dotnet/tools"
-          
+
       - name: Calculate SemVer
         id: version
         run: |
@@ -48,7 +48,7 @@ jobs:
       - name: "Check reusable workflow exit code"
         if: ${{ steps.reusable_build.outcome != 'success' }} # Check if the reusable workflow step failed
         run: |
-          echo "Reusable workflow failed with exit code $?"
+          echo "Reusable workflow failed with exit code ${{ steps.reusable_build.conclusion }}"
           exit 1  # Fail this workflow step if the reusable workflow failed
       
       - name: "Check code coverage"
