@@ -36,10 +36,25 @@ runs:
       run: |
         echo ".NET version: ${{ inputs.DOTNET-VERSION }}"
 
+    - name: "Cache .NET packages"
+      uses: actions/cache@v4
+      with:
+        path: ~/.nuget/packages
+        key: ${{ runner.os }}-nuget-${{ hashFiles('**/packages.lock.json') }}
+        restore-keys: |
+          ${{ runner.os }}-nuget-
+
     - name: "Setup .NET"
       uses: actions/setup-dotnet@v4
       with:
         dotnet-version: "${{inputs.DOTNET-VERSION}}"
+
+    # - name: Calculate SemVer
+    #     id: version
+    #     run: |
+    #       echo "GITVERSION=$(gitversion /showvariable SemVer)" >> $GITHUB_ENV
+    #     env:
+    #       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
 
     - name: "Install dependencies for the Solution"
       shell: bash
@@ -107,7 +122,7 @@ runs:
         targetdir: coveragereport
         reporttypes: Html;HtmlSummary;MarkdownSummaryGithub
 
-    - name: "Upload Code Caoverage Report Artifacts"
+    - name: "Upload Code Coverage Report Artifacts"
       uses: actions/upload-artifact@v4
       with:
         name: solution-code-coverage-artifacts
