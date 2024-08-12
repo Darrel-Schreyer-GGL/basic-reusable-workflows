@@ -101,7 +101,7 @@ runs:
         path: "./**/bin/Release"
 
     - name: Generate Code Coverage Report
-      uses: danielpalme/ReportGenerator-GitHub-Action@5808021ec4deecb0ab3da051d49b4ce65fcc20af
+      uses: danielpalme/ReportGenerator@5808021ec4deecb0ab3da051d49b4ce65fcc20af
       with:
         reports: '**/TestResults/**/coverage.cobertura.xml'
         targetdir: coveragereport
