@@ -18,6 +18,10 @@ inputs:
     required: true
     type: number
     default: 50
+  SEMVER:
+    description: "The semantic version of the solution"
+    required: true
+    type: string
 
 outputs:
   COVERAGE-PERCENTAGE:
@@ -49,20 +53,13 @@ runs:
       with:
         dotnet-version: "${{inputs.DOTNET-VERSION}}"
 
-    - name: Calculate SemVer
-        id: version
-        run: |
-          echo "GITVERSION=$(gitversion /showvariable SemVer)" >> $GITHUB_ENV
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-
     - name: "Install dependencies for the Solution"
       shell: bash
       run: dotnet restore "${{ inputs.SOLUTION-PATH }}"
 
     - name: "Build the Solution"
       shell: bash
-      run: dotnet build --no-restore --configuration Release "${{ inputs.SOLUTION-PATH }}"
+      run: dotnet build --no-restore --configuration Release "${{ inputs.SOLUTION-PATH }}" /p:Version=${{ inputs.SEMVER }}
 
     - name: "Run tests for the Solution with Code Coverage"
       shell: bash

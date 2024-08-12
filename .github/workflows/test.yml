@@ -24,6 +24,13 @@ jobs:
       - name: "Check out code" # Only need for test as it needs to access the ./action.yml file
         uses: actions/checkout@v4
 
+      - name: Calculate SemVer
+        id: version
+        run: |
+          echo "GITVERSION=$(gitversion /showvariable SemVer)" >> $GITHUB_ENV
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
       - name: "Calls Reusable"
         id: reusable_build  # Assign an ID to the step to reference its outputs
         uses: ./
@@ -31,6 +38,7 @@ jobs:
           DOTNET-VERSION: "${{ env.DOTNET-VERSION }}"
           SOLUTION-PATH: "./samples/DotNetConsoleSample/DotNetConsoleSample.sln"
           EXPECTED-COVERAGE: ${{ env.EXPECTED_COVERAGE }}
+          SEMVER: ${{ env.GITVERSION }}
 
       - name: "Check reusable workflow exit code"
         if: ${{ steps.reusable_build.outcome != 'success' }} # Check if the reusable workflow step failed
