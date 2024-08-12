@@ -25,16 +25,33 @@ jobs:
         uses: actions/checkout@v4
 
       - name: Install GitVersion
-        run: |
-          dotnet tool install -g GitVersion.Tool
-          export PATH="$PATH:/home/runner/.dotnet/tools"
+        uses: gittools/actions/gitversion/setup@v3.0.0
+        with:
+          versionSpec: '6.0.0'
 
-      - name: Calculate SemVer
-        id: version
-        run: |
-          echo "GITVERSION=$(gitversion /showvariable SemVer)" >> $GITHUB_ENV
-        env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+      - name: Determine Version
+        id: version-step
+        uses: gittools/actions/gitversion/execute@v3.0.0
+        with:
+          useConfigFile: false
+
+      - run: |
+            echo "FullSemVer (env.fullSemVer)            : ${{ env.fullSemVer }}"
+        name: Display GitVersion variables (without prefix)
+
+      - run: |
+            echo "FullSemVer (env.GitVersion_FullSemVer) : ${{ env.GitVersion_FullSemVer }}"
+        name: Display GitVersion variables (with prefix)
+
+      - run: |
+            echo "FullSemVer (steps.version_step.outputs.fullSemVer)            : ${{ steps.version_step.outputs.fullSemVer }}"
+        name: Display GitVersion outputs (step output without prefix)
+
+      - run: |
+            echo "FullSemVer (steps.version_step.outputs.GitVersion_FullSemVer) : ${{ steps.version_step.outputs.GitVersion_FullSemVer }}"
+        name: Display GitVersion outputs (step output with prefix)
+
+
 
       - name: "Calls Reusable"
         id: reusable_build
