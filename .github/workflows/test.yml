@@ -35,8 +35,7 @@ jobs:
         id: gitversion-execute
         uses: gittools/actions/gitversion/execute@v3.0.0
         with:
-          useConfigFile: true
-          configFilePath: "${{ github.workspace }}/GitVersion.yml"
+          useConfigFile: false
 
       - name: "Calls Reusable"
         id: reusable_build
