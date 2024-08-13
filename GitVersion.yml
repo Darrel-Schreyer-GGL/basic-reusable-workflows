@@ -1,4 +1,4 @@
-mode: ContinuousIntegration
+mode: ContinuousDelivery
 branches:
   main:
     tag: ''
