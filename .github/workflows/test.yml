@@ -21,6 +21,20 @@ jobs:
 
     steps:
 
+      - name: "Set up environment"
+        run: |
+         echo "PAT_TOKEN=${{ secrets.PAT_TOKEN }}" >> $GITHUB_ENV
+
+      - name: "Validate PAT Token"
+        if: ${{ env.PAT_TOKEN == '' }}
+        run: |
+          echo "Error: PAT_TOKEN is not set or is empty" && exit 1
+
+      - name: "Continue if PAT_TOKEN is set"
+        if: ${{ env.PAT_TOKEN != '' }}
+        run: |
+          echo "PAT_TOKEN is set"
+
       - name: "Check out code" # Only need for test as it needs to access the ./action.yml file
         uses: actions/checkout@v4
         with:
